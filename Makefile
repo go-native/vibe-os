@@ -37,7 +37,11 @@ $(KERNEL): $(OBJECTS)
 
 # Run kernel directly in QEMU (without ISO)
 run-kernel: $(KERNEL)
-	$(QEMU) -kernel $(KERNEL)
+	$(QEMU) -kernel $(KERNEL) -vga std -no-reboot -no-shutdown -device isa-debug-exit
+
+# Run kernel with curses interface (better for keyboard input)
+run-kernel-curses: $(KERNEL)
+	$(QEMU) -kernel $(KERNEL) -display curses -no-reboot -no-shutdown
 
 # Run in QEMU with debug options
 debug: $(KERNEL)
@@ -49,4 +53,4 @@ clean:
 	rm -rf isodir
 	rm -f vibe-os.iso
 
-.PHONY: all clean run-kernel debug 
+.PHONY: all clean run-kernel run-kernel-curses debug 
